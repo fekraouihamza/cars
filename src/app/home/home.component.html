@@ -1,0 +1,24 @@
+<div class="bg-light">
+    <div class="container">
+        <h1 class="display-4 pt-3 mb-0">
+           Nos véhicules
+        </h1>
+        <hr class="mb-4 mt-2 bg-dark">
+        <div class="row">
+          <div *ngFor="let car of cars; let i = index" class="col-sm-12 col-md-6 col-lg-4">
+            <div class="bg-white w-100 shadow my-3">
+              <div *ngFor="let photos of car.photos; let first = first">
+                <img *ngIf="first" style="height: 200px;" class="d-block p-1 border border-secandary rounded bg-light w-100" [src]="photos" alt="photo véhicule" class="w-100">
+              </div>
+              <h3 class="font-weight-normal pt-3 pl-3 mb-0">{{ car.marque }} {{ car.modele }}</h3>
+              <h4 class="font-weight-normal pt-3 pl-3 mb-0">{{ car.prix }} €</h4>
+              <small class="pl-3"> {{ car.kilometres }} km, Année : {{ car.annee }}</small>
+              <div class="text-center">
+                <button class="btn btn-primary my-3 mx-auto" (click)="onViewCar(i)" > Plus de détails... </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+

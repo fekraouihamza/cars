@@ -1,0 +1,14 @@
+input.ng-touched.ng-invalid{
+    border: 1px solid red;
+}
+
+input.ng-valid{
+    border: 1px solid green;
+}
+input.mot.ng-touched.ng-invalid{
+    border: 1px solid red;
+}
+
+input.mot.ng-valid{
+    border: 1px solid green;
+}

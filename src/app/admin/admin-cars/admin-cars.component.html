@@ -1,0 +1,129 @@
+<div class="modal fade" id="popup_mail_confirm">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body MailConfirm">
+          <button type="button" class="close btn-lg" data-dismiss="modal"><i class="fas fa-times"></i></button>
+          <h4><i class="fas fa-exclamation-triangle"></i>  Bouton désactivé.</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="rounded shadow bg-white p-5">
+    <div class="row">
+      <div class="col-12 d-flex">
+        <h2 class="font-weight-dark"><i class="fas fa-car-side"></i>  Nos Véhiclues</h2>
+        <button class="btn btn-primary ml-auto" type="button" (click)="resetCarForm()" data-toggle="modal" data-target="#carsFormModal">
+          <i class="fas fa-plus"></i> Ajouter une voiture</button>
+      </div>
+    </div>
+    <hr class="mt-1 mb-5 bg-dark">
+    <div class="row">
+      <div *ngFor="let car of cars; let i = index" class="col-12 shadow-sm p4 mb-3 bg-light">
+            <div class="row">
+              <div class="col-md-10">
+                <div class="w-100" *ngFor="let photos of car.photos; let first = first">
+                  <img *ngIf="first" [src]="photos" alt="Car photo" style="width: 200px; height: 150px;">
+                </div>
+                <h4 *ngIf="!car.photos || car.photos.lenght == 0" class="font-weight-light">Pas de photo</h4>
+                <h4 class="font-weight-normal mt-2">{{ car.marque }}   {{ car.modele }}</h4>
+                <h3 class="font-weight-dark">Prix: {{ car.prix }} €</h3>
+                <p class="font-weight-light">{{ car.kilometres }} km, année: {{ car.annee }}</p>
+              </div>
+              <div class="col-md-2">
+                <div class="ml-auto pt-5">
+                  <button class="btn btn-primary m-1" (click)="onEditCar(car, i)" ><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-danger m-1" (click)="onDeleteCar(car)"><i class="fas fa-trash-alt"></i></button>
+                </div>
+              </div>
+            </div>
+    </div>
+   </div>
+  </div>
+  <div class="modal fade" id="carsFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centred" role="document">
+      <div class="modal-content"> 
+          <div class="rounded shadow bg-white p-5">
+            <h3 class="font-weight-light">Nos véhicules</h3>
+            <hr class="mt-0 bg-dark">
+            <form [formGroup]="carForm" class="py-5" (ngSubmit)="onSaveCar()">
+              <input type="text"  formControlName="id" hidden>
+              <div class="form-group">
+                <input type="text" formControlName="modele" id="modele" placeholder="Modéle"  class="form-control">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label for="marque" class="input-group-text">Marque</label>
+                </div>
+                <select formControlName="marque" id="marque" class="custom-select">
+                  <option value="Peugeot">Peugeot</option>
+                  <option value="Citroën">Citroën</option>
+                </select>
+              </div>
+  
+              <div class="form-group">
+                <div class="input-group mb-0"> 
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Ajouter une image</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" id="photo" (change)="detectFile($event)" aria-describedby="inputGroupFileAddon01" accept="images/*" class="custom-file-input">
+                        <label for="photo" class="custom-file-label">Choisir...</label>
+                    </div>
+                </div>
+                <small class="text-warning" *ngIf="photoUploading" >Chargement....</small>
+                <small class="text-success" *ngIf="photoUploaded">Fichier chargé</small>
+              </div>
+              <div class="row">
+                <div *ngFor="let photo of photosAdded; let i = index" class="col-4 position-relative border border-secondary rounded m-1 p-1 bg-light">
+                    <span class="text-danger position-absolute deletePhoto mr-1" (click)= "onRemoveAddedPhoto(i)"><i class="fas fa-times"></i></span>
+                    <img [src]="photo" alt="photo" class="w-100">
+                </div>
+              </div>
+              <div class="form-group">
+                  <div class="row">
+                    <div class="col-4">
+                      <input type="text" id="prix" formControlName="prix" placeholder="Prix (€)" class="form-control">
+                    </div>
+
+                    <div class="col-4">
+                      <input type="text" id="kilometres" formControlName="kilometres" placeholder="Kilométres (km)" class="form-control">
+                    </div>
+                    
+                    <div class="col-4">
+                      <input type="text" id="annee" formControlName="annee" placeholder="Année" class="form-control">
+                    </div>
+                  </div>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label for="carburant" class="input-group-text">Carburant</label>
+                </div>
+                <select formControlName="carburant" id="carburant" class="custom-select">
+                  <option value="essence">Essence</option>
+                  <option value="diesel">Diesel</option>
+                  <option value="hypride">Hypride</option>
+                  <option value="electrique">Electrique</option>
+                  <option value="gpl">GPL</option>
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label for="boite" class="input-group-text">Boite de vitesse</label>
+                </div>
+                <select formControlName="boite" id="boite" class="custom-select">
+                  <option value="manuelle">Manuelle</option>
+                  <option value="automatique">Automatique</option>
+                 
+                </select>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control mb-3" id="description" placeholder="Description" formControlName="description" rows="3"></textarea>
+                <button class="btn btn-primary float-right" type="submit" [disabled]="carForm.invalid">Enregistrer</button>
+              </div>  
+            </form>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  
